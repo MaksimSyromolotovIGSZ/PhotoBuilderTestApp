@@ -4,12 +4,15 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.photobuilder.data.local.dao.GalleryDao
 import com.example.photobuilder.data.local.entity.PhotoEntity
+import com.example.photobuilder.data.local.entity.TagEntity
 
 @Database(
     entities = [
-        PhotoEntity::class
+        PhotoEntity::class,
+        TagEntity::class,
     ],
-    version = 1
+    version = 2,
+    exportSchema = false,
 )
 abstract class AppDatabase : RoomDatabase() {
 

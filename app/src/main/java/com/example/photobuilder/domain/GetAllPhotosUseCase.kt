@@ -7,10 +7,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetPhotoUseCase @Inject constructor(
-    private val dao: GalleryDao
-) {
-
-    operator fun invoke(tags: Set<String> = emptySet()): Flow<List<Photo>> =
-        dao.getPhotos(tags.toList()).map { photos -> photos.map { it.toPhoto() } }
+class GetAllPhotosUseCase @Inject constructor(private val dao: GalleryDao) {
+    operator fun invoke(): Flow<List<Photo>> {
+        return dao.getAllPhotos().map { photos -> photos.map { it.toPhoto() } }
+    }
 }

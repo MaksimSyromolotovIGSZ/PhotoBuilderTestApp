@@ -7,4 +7,9 @@
     <string name="cancel_selection">Cancel Selection</string>
     <string name="delete_selected_photos">Delete Selected Photos</string>
     <string name="enter_or_create_tag_hint">Enter or create tag:</string>
+    <string name="close_tag_chooser">close tag chooser</string>
+    <string name="alle_bilder">Alle Bilder</string>
+    <string name="filter_by_tags">Filter by Tags</string>
+    <string name="photo">photo</string>
+    <string name="save_action">Save</string>
 </resources>

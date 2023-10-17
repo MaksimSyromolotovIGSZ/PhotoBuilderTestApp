@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_buttons_panel_background"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:paddingVertical="@dimen/padding_vertical_16"
+    android:visibility="gone"
+    tools:visibility="visible">
+
+    <ImageButton
+        android:id="@+id/cancel_selection_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/translucent_background"
+        android:contentDescription="@string/cancel_selection"
+        android:paddingHorizontal="16dp"
+        android:src="@drawable/cancel_selection_icon" />
+
+    <ImageButton
+        android:id="@+id/delete_selected_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/translucent_background"
+        android:contentDescription="@string/delete_selected_photos"
+        android:paddingHorizontal="16dp"
+        android:src="@drawable/delete_icon" />
+
+</LinearLayout>

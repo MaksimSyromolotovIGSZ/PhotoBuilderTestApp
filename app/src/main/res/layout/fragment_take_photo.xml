@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".feature.tekephoto.TakePhotoFragment">
@@ -10,21 +11,57 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/save_tag_panel"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:background="@color/red"
+        android:orientation="vertical"
+        android:paddingVertical="@dimen/padding_vertical_16"
+        android:visibility="gone">
+
+        <com.google.android.material.textfield.MaterialAutoCompleteTextView
+            android:id="@+id/enterTag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/enter_or_create_tag_hint"
+            android:inputType="text"
+            android:padding="16dp"
+            tools:ignore="Autofill"
+            android:background="@color/white"
+            tools:visibility="visible" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/save_tag_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@color/red"
+            android:padding="16dp"
+            android:text="@string/save_action"
+            android:textSize="18sp" />
+    </LinearLayout>
+
     <ImageButton
         android:id="@+id/takePhotoBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
-        android:background="@color/translucent_background"
-        android:src="@drawable/icon_camera"
         android:layout_margin="16dp"
-        android:contentDescription="@string/take_photo_button_text" />
+        android:background="@color/translucent_background"
+        android:contentDescription="@string/take_photo_button_text"
+        android:src="@drawable/icon_camera" />
+
     <ImageButton
+        android:id="@+id/back_to_gallery_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
         android:layout_margin="20dp"
         android:background="@color/translucent_background"
-        android:layout_gravity="top|end"
-        android:src="@drawable/gallery_icon"
-        android:contentDescription="@string/back_to_gallery" />
+        android:contentDescription="@string/back_to_gallery"
+        android:src="@drawable/gallery_icon" />
 </FrameLayout>

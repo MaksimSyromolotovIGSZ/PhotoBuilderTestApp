@@ -3,6 +3,7 @@ package com.example.photobuilder.domain
 import android.util.Log
 import com.example.photobuilder.data.local.dao.GalleryDao
 import com.example.photobuilder.data.local.dao.toPhotoEntity
+import com.example.photobuilder.domain.entity.Photo
 import javax.inject.Inject
 
 class SavePhotoUseCase @Inject constructor(

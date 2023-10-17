@@ -4,4 +4,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="translucent_background">#00000000</color>
     <color name="red">#C74C4C</color>
+    <color name="primary_text_color">#151B19</color>
 </resources>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_buttons_panel_background"
+    android:orientation="horizontal"
+    android:gravity="center"
+    android:paddingVertical="@dimen/padding_vertical_16">
+
+    <ImageButton
+        android:id="@+id/take_photo_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/translucent_background"
+        android:src="@drawable/icon_take_photo"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+</LinearLayout>

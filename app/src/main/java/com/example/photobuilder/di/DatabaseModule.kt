@@ -1,9 +1,9 @@
 package com.example.photobuilder.di
 
-import com.example.photobuilder.data.local.db.AppDatabase
 import android.content.Context
 import androidx.room.Room
 import com.example.photobuilder.data.local.dao.GalleryDao
+import com.example.photobuilder.data.local.db.AppDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -22,7 +22,9 @@ class DatabaseModule {
             appContext,
             AppDatabase::class.java,
             "gallery"
-        ).build()
+        )
+            .fallbackToDestructiveMigration()
+            .build()
 
     @Provides
     fun provideGalleryDao(appDatabase: AppDatabase): GalleryDao = appDatabase.galleryDao()

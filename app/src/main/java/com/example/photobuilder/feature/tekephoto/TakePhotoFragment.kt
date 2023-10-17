@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.ArrayAdapter
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
@@ -15,6 +16,7 @@ import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -33,6 +35,7 @@ class TakePhotoFragment : Fragment(R.layout.fragment_take_photo) {
     private val viewBinding: FragmentTakePhotoBinding by viewBinding(FragmentTakePhotoBinding::bind)
     private val viewModel by viewModels<TakePhotoViewModel>()
     private var imageCapture: ImageCapture? = null
+    private lateinit var autoCompleteAdapter: ArrayAdapter<String>
 
     private val activityResultLauncher =
         registerForActivityResult(
@@ -55,20 +58,50 @@ class TakePhotoFragment : Fragment(R.layout.fragment_take_photo) {
         super.onViewCreated(view, savedInstanceState)
         if (allPermissionsGranted()) {
             startCamera()
-            viewBinding.takePhotoBtn.setOnClickListener { takePhoto() }
-            viewModel.uiEffect.observeWithLifecycle(viewLifecycleOwner) {
-                findNavController().popBackStack()
-            }
+            setupListeners()
+            setupAdapter()
+            observeViewState()
+            viewBinding.enterTag.setAdapter(autoCompleteAdapter)
+            viewBinding.enterTag.threshold = 0
         } else {
             requestPermissions()
         }
     }
+
+    private fun setupAdapter() {
+        autoCompleteAdapter =
+            ArrayAdapter<String>(
+                requireContext(),
+                R.layout.drop_down_item,
+                R.id.drop_item_view,
+            )
+    }
+
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all { permission ->
         ContextCompat.checkSelfPermission(
             requireActivity().baseContext,
             permission
         ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun observeViewState() {
+        viewModel.uiEffect.observeWithLifecycle(viewLifecycleOwner) {
+            findNavController().popBackStack()
+        }
+        viewModel.uiState.observeWithLifecycle(viewLifecycleOwner) { state ->
+            viewBinding.saveTagPanel.isVisible = state.isPhotoLoaded
+            autoCompleteAdapter.clear()
+            autoCompleteAdapter.addAll(state.existingTags.toList())
+        }
+    }
+
+    private fun setupListeners() {
+        viewBinding.takePhotoBtn.setOnClickListener { takePhoto() }
+        viewBinding.saveTagButton.setOnClickListener {
+            viewModel.savePhoto(viewBinding.enterTag.text.toString())
+        }
+        viewBinding.backToGalleryButton.setOnClickListener { findNavController().popBackStack() }
     }
 
     private fun startCamera() {
@@ -80,10 +113,8 @@ class TakePhotoFragment : Fragment(R.layout.fragment_take_photo) {
                 .also {
                     it.setSurfaceProvider(viewBinding.preview.surfaceProvider)
                 }
-
             imageCapture = ImageCapture.Builder().build()
             val cameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
-
             try {
                 cameraProvider.unbindAll()
                 cameraProvider.bindToLifecycle(
@@ -95,16 +126,13 @@ class TakePhotoFragment : Fragment(R.layout.fragment_take_photo) {
             } catch (exc: Exception) {
                 Log.e(TAG, exc.toString())
             }
-
         }, ContextCompat.getMainExecutor(requireContext()))
     }
 
     private fun takePhoto() {
         val imageCapture = imageCapture ?: return
-
         val timeStamp = SimpleDateFormat(FILENAME_FORMAT, Locale.US)
             .format(System.currentTimeMillis())
-
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, timeStamp)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
@@ -112,7 +140,6 @@ class TakePhotoFragment : Fragment(R.layout.fragment_take_photo) {
                 put(MediaStore.Images.Media.RELATIVE_PATH, "Pictures/CameraX-Image")
             }
         }
-
         val outputOptions = ImageCapture.OutputFileOptions
             .Builder(
                 requireContext().contentResolver,
@@ -120,7 +147,6 @@ class TakePhotoFragment : Fragment(R.layout.fragment_take_photo) {
                 contentValues
             )
             .build()
-
         imageCapture.takePicture(
             outputOptions,
             ContextCompat.getMainExecutor(requireContext()),
@@ -131,13 +157,11 @@ class TakePhotoFragment : Fragment(R.layout.fragment_take_photo) {
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     output.savedUri?.let { uri ->
-                        ChooseTagDialog(requireContext()) {
-                            viewModel.onImageSave(
-                                uri = uri.toString(),
-                                createdAt = timeStamp,
-                                tag = ""
-                            )
-                        }.show()
+                        viewModel.onImageProcessed(
+                            uri = uri.toString(),
+                            createdAt = timeStamp,
+                            tag = "",
+                        )
                     }
                 }
             }

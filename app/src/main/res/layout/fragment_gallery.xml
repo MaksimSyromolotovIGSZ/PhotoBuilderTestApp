@@ -5,33 +5,47 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingHorizontal="16dp"
     tools:context=".feature.gallery.GalleryFragment">
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/tag_chips"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/curated_photos_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/camera_button_panel"
+        app:layout_constraintTop_toBottomOf="@+id/top_gallery_header"
+        android:layout_marginBottom="8dp"/>
+
+    <include
+        android:id="@+id/top_buttons_panel"
+        layout="@layout/top_buttons_panel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        tools:layout_editor_absoluteX="16dp"
+        tools:visibility="gone" />
 
-
-
-    <ImageView
-        android:id="@+id/photoView"
-        android:layout_width="wrap_content"
+    <include
+        android:id="@+id/top_gallery_header"
+        layout="@layout/top_gallery_header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="16dp"
+        tools:visibility="visible" />
+
+    <include
+        android:id="@+id/camera_button_panel"
+        layout="@layout/bottom_camera_button_panel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <include
         android:id="@+id/buttonPanel"
-        layout="@layout/bottom_buttons_pannel"
+        layout="@layout/bottom_items_selection_buttons_pannel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
